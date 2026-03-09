@@ -1,0 +1,1054 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Music & The Future</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Literata:ital,opsz,wght@0,7..72,300;0,7..72,400;0,7..72,600;0,7..72,700;1,7..72,400&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --black: #000;
+    --surface: #0c0c0c;
+    --rule: #1a1a1a;
+    --pink: #ec4899;
+    --white: #fff;
+    --grey: #fff;
+    --dim: #fff;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scrollbar-width: thin; scrollbar-color: #333 var(--black); }
+  body {
+    font-family: 'Literata', Georgia, serif;
+    background: var(--black);
+    color: var(--white);
+    line-height: 1.75;
+    min-height: 100vh;
+  }
+  a { color: inherit; text-decoration: none; }
+  .source-link { text-decoration: underline; text-decoration-color: rgba(255,255,255,0.3); text-underline-offset: 2px; transition: text-decoration-color 0.2s; }
+  .source-link:hover { text-decoration-color: var(--white); }
+  .page-img {
+    width: 100%;
+    max-width: 700px;
+    height: 240px;
+    object-fit: cover;
+    margin: 0 0 2rem;
+    opacity: 0.8;
+    filter: grayscale(0.2);
+  }
+
+  header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    background: var(--black);
+    border-bottom: 1px solid var(--rule);
+  }
+  .header-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 56px;
+  }
+  .site-title {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+  
+  nav { display: flex; gap: 0; }
+  nav a {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    padding: 1.15rem 1.2rem;
+    color: var(--grey);
+    border-left: 1px solid var(--rule);
+    transition: color 0.2s, background 0.2s;
+    cursor: pointer;
+  }
+  nav a:hover { color: var(--white); background: var(--surface); }
+  nav a.active { color: var(--pink); }
+
+  main {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 80px 2rem 4rem;
+    overflow: hidden;
+  }
+
+  .page { display: none; }
+  .page.active { display: block; animation: pageIn 0.3s ease-out; }
+  @keyframes pageIn {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .page-header {
+    padding: 3rem 0 2rem;
+    border-bottom: 1px solid var(--rule);
+    margin-bottom: 3rem;
+  }
+  .page-header .label {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--white);
+    margin-bottom: 0.5rem;
+  }
+  .page-header h1 {
+    font-family: 'DM Sans', sans-serif;
+    font-size: clamp(1.8rem, 4vw, 3rem);
+    font-weight: 800;
+    line-height: 1.15;
+    max-width: 700px;
+  }
+
+  .col-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 280px;
+    gap: 3rem;
+    align-items: start;
+  }
+  @media (max-width: 900px) {
+    .col-layout { grid-template-columns: 1fr; gap: 2rem; }
+  }
+
+  .prose { max-width: 640px; overflow-wrap: break-word; }
+  .prose p {
+    font-size: 1rem;
+    font-weight: 400;
+    margin-bottom: 1.6rem;
+    color: var(--white);
+  }
+  .prose h2 {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 1.2rem;
+    font-weight: 700;
+    margin: 2.5rem 0 0.8rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--rule);
+  }
+
+  .sidebar-stats {
+    position: sticky;
+    top: 80px;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    padding-top: 0.5rem;
+  }
+  .big-stat {
+    padding: 1.5rem 0;
+    border-bottom: 1px solid var(--rule);
+  }
+  .big-stat .num {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 3.2rem;
+    font-weight: 800;
+    line-height: 1;
+    color: var(--white);
+  }
+  .big-stat .desc {
+    font-size: 1rem;
+    color: var(--white);
+    margin-top: 0.4rem;
+    font-weight: 400;
+  }
+  .big-stat .src {
+    font-family: 'Literata', Georgia, serif;
+    font-size: 0.85rem;
+    color: var(--white);
+    margin-top: 0.5rem;
+    
+    
+  }
+
+  .chart-block {
+    margin: 2.5rem auto;
+    max-width: 640px;
+    overflow: visible;
+  }
+  .chart-block .chart-label {
+    font-family: 'Literata', Georgia, serif;
+    font-size: 1rem;
+    
+    
+    color: var(--white);
+    margin-bottom: 1.2rem;
+  }
+
+  .h-bars { display: flex; flex-direction: column; gap: 0.8rem; max-width: 600px; margin: 0 auto; }
+  .h-bar-row { display: flex; align-items: center; gap: 1rem; }
+  .h-bar-label {
+    font-family: 'Literata', Georgia, serif;
+    font-size: 1rem;
+    color: var(--white);
+    width: 50px;
+    text-align: right;
+    flex-shrink: 0;
+  }
+  .h-bar-track {
+    flex: 1;
+    height: 24px;
+    background: var(--surface);
+    position: relative;
+    overflow: hidden;
+  }
+  .h-bar-fill {
+    height: 100%;
+    background: var(--pink);
+    width: 0;
+    transition: width 1.2s cubic-bezier(0.22, 1, 0.36, 1);
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding-right: 8px;
+  }
+  .h-bar-val {
+    font-family: 'Literata', Georgia, serif;
+    font-size: 1rem;
+    color: var(--white);
+    white-space: nowrap;
+  }
+
+  .two-bars {
+    display: flex;
+    gap: 3rem;
+    justify-content: center;
+    margin: 2rem auto;
+    max-width: 320px;
+  }
+  .single-bar {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 80px;
+  }
+  .single-bar-wrap {
+    height: 160px;
+    display: flex;
+    align-items: flex-end;
+    width: 100%;
+  }
+  .single-bar-inner {
+    width: 100%;
+    background: var(--pink);
+    transition: height 1.2s cubic-bezier(0.22, 1, 0.36, 1);
+    height: 0;
+    position: relative;
+  }
+  .single-bar-val {
+    position: absolute;
+    top: -24px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: 'Literata', Georgia, serif;
+    font-size: 1rem;
+    font-weight: 400;
+    color: var(--white);
+  }
+  .single-bar-label {
+    font-family: 'Literata', Georgia, serif;
+    font-size: 1rem;
+    color: var(--white);
+    text-align: center;
+    margin-top: 0.5rem;
+    height: 3rem;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+  }
+
+  .donut-row {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    flex-wrap: wrap;
+    padding: 1rem 0;
+  }
+  .donut-wrap {
+    position: relative;
+    width: 130px;
+    height: 130px;
+    flex-shrink: 0;
+  }
+  .donut-wrap svg { transform: rotate(-90deg); width: 130px; height: 130px; overflow: visible; }
+  .donut-wrap .track { fill: none; stroke: var(--surface); stroke-width: 12; }
+  .donut-wrap .fill {
+    fill: none;
+    stroke: var(--pink);
+    stroke-width: 12;
+    stroke-linecap: butt;
+    stroke-dasharray: 0 283;
+    transition: stroke-dasharray 1.5s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .donut-wrap .center {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 1.4rem;
+    font-weight: 800;
+    color: var(--white);
+  }
+  .donut-info {
+    font-size: 1rem;
+    font-weight: 400;
+    max-width: 300px;
+    line-height: 1.6;
+  }
+  .donut-info .fine {
+    font-family: 'Literata', Georgia, serif;
+    font-size: 0.85rem;
+    color: var(--white);
+    margin-top: 0.6rem;
+    
+    
+  }
+
+  .listen-intro {
+    max-width: 600px;
+    font-size: 1rem;
+    font-weight: 400;
+    margin-bottom: 2rem;
+  }
+  .audio-note {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--dim);
+    border: 1px dashed var(--rule);
+    padding: 0.8rem 1rem;
+    margin-bottom: 2rem;
+    max-width: 640px;
+  }
+  .round-nav {
+    display: flex;
+    gap: 0;
+    margin-bottom: 2rem;
+    border: 1px solid var(--rule);
+    width: fit-content;
+  }
+  .round-tab {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    padding: 0.7rem 1.5rem;
+    cursor: pointer;
+    color: var(--grey);
+    border-right: 1px solid var(--rule);
+    transition: color 0.2s, background 0.2s;
+    background: none;
+    border-top: none;
+    border-bottom: none;
+    border-left: none;
+  }
+  .round-tab:last-child { border-right: none; }
+  .round-tab:hover { color: var(--white); background: var(--surface); }
+  .round-tab.active { color: var(--pink); background: var(--surface); }
+  .round-tab.done { color: var(--white); }
+  .round-tab:disabled { cursor: not-allowed; opacity: 0.3; }
+
+  .round-panel { display: none; max-width: 640px; }
+  .round-panel.active { display: block; animation: pageIn 0.3s ease-out; }
+  .round-prompt {
+    font-size: 1rem;
+    font-weight: 400;
+    margin-bottom: 1.5rem;
+  }
+  .track-pair {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+  @media (max-width: 600px) {
+    .track-pair { grid-template-columns: 1fr; }
+  }
+  .track-box {
+    background: var(--surface);
+    border: 1px solid var(--rule);
+    padding: 1.2rem;
+    cursor: pointer;
+    transition: border-color 0.2s;
+  }
+  .track-box:hover { border-color: #333; }
+  .track-box.selected { border-color: var(--pink); }
+  .track-box.is-ai { border-color: #ef4444; }
+  .track-box.is-human { border-color: #22c55e; }
+  .track-box .track-name {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 600;
+    margin-bottom: 0.8rem;
+  }
+  .track-box audio {
+    width: 100%;
+    height: 36px;
+    filter: invert(1) hue-rotate(180deg) brightness(0.7);
+  }
+  .track-box .tag {
+    display: none;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-top: 0.6rem;
+    padding: 0.2rem 0.5rem;
+    width: fit-content;
+  }
+  .track-box .tag.ai { color: #ef4444; border: 1px solid #ef4444; }
+  .track-box .tag.human { color: #22c55e; border: 1px solid #22c55e; }
+  .pick-row {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+  }
+  .pick-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--grey);
+  }
+  .pick-btn {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.7rem;
+    padding: 0.5rem 1.2rem;
+    background: none;
+    border: 1px solid var(--rule);
+    color: var(--grey);
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .pick-btn:hover { color: var(--white); border-color: #444; }
+  .pick-btn.active { color: var(--black); background: var(--pink); border-color: var(--pink); }
+  .reveal-btn {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.8rem;
+    font-weight: 600;
+    padding: 0.6rem 1.6rem;
+    background: var(--pink);
+    color: var(--black);
+    border: none;
+    cursor: pointer;
+    transition: opacity 0.2s;
+  }
+  .reveal-btn:hover { opacity: 0.85; }
+  .reveal-btn:disabled { opacity: 0.25; cursor: not-allowed; }
+  .round-result {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-top: 1.2rem;
+    display: none;
+  }
+  .trick-box {
+    border: 1px solid #ef4444;
+    padding: 1.2rem;
+    margin-top: 1.2rem;
+    display: none;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.7;
+  }
+  .trick-box strong { color: #ef4444; font-weight: 600; }
+  .next-round-btn {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    padding: 0.5rem 1.2rem;
+    background: none;
+    border: 1px solid var(--rule);
+    color: var(--white);
+    cursor: pointer;
+    margin-top: 1rem;
+    display: none;
+    transition: border-color 0.2s;
+  }
+  .next-round-btn:hover { border-color: var(--pink); color: var(--pink); }
+  .final-result {
+    display: none;
+    margin-top: 2rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--rule);
+    max-width: 640px;
+  }
+  .final-result .score {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 3rem;
+    font-weight: 800;
+    color: var(--white);
+  }
+  .final-result .verdict {
+    font-size: 1rem;
+    font-weight: 400;
+    margin-top: 0.5rem;
+  }
+
+  .source-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1rem;
+    table-layout: auto;
+  }
+  .source-table th {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.6rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--grey);
+    text-align: left;
+    padding: 0.8rem 1rem 0.8rem 0;
+    border-bottom: 1px solid var(--rule);
+    font-weight: 400;
+  }
+  .source-table td {
+    padding: 1rem 1rem 1rem 0;
+    border-bottom: 1px solid var(--rule);
+    vertical-align: top;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+  }
+  .source-table tr:hover td { background: var(--surface); }
+  .source-name {
+    font-weight: 600;
+    font-size: 1rem;
+    display: block;
+    margin-bottom: 0.15rem;
+  }
+  .source-outlet {
+    font-family: 'Literata', Georgia, serif;
+    font-size: 0.85rem;
+    color: var(--white);
+    
+    
+  }
+  .type-pill {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.55rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    padding: 0.15rem 0.5rem;
+    border: 1px solid;
+    white-space: nowrap;
+  }
+  .type-pill.academic { color: var(--pink); border-color: var(--pink); }
+  .type-pill.news { color: #22c55e; border-color: #22c55e; }
+  .type-pill.industry { color: #fbbf24; border-color: #fbbf24; }
+  .type-pill.community { color: #ef4444; border-color: #ef4444; }
+  .eval-tags { display: flex; gap: 0.4rem; flex-wrap: wrap; margin-top: 0.4rem; }
+  .etag {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.5rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    padding: 0.1rem 0.4rem;
+  }
+  .etag.s { color: #22c55e; border: 1px solid rgba(34,197,94,0.3); }
+  .etag.w { color: #fbbf24; border: 1px solid rgba(251,191,36,0.3); }
+
+  .rec-prose { max-width: 640px; }
+  .rec-prose p {
+    font-size: 1rem;
+    font-weight: 400;
+    margin-bottom: 1.5rem;
+    line-height: 1.8;
+  }
+  .rec-prose h3 {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    color: var(--white);
+  }
+  .rec-list {
+    list-style: disc;
+    padding-left: 1.2rem;
+    max-width: 640px;
+  }
+  .rec-list li {
+    font-size: 1rem;
+    font-weight: 400;
+    margin-bottom: 1.2rem;
+    line-height: 1.8;
+  }
+  .rec-list li strong {
+    font-weight: 600;
+  }
+
+  @media (max-width: 768px) {
+    .header-inner { padding: 0 1rem; }
+    nav a { padding: 1.15rem 0.8rem; font-size: 0.6rem; }
+    main { padding: 70px 1.2rem 3rem; }
+    .source-table th:nth-child(3),
+    .source-table td:nth-child(3) { display: none; }
+    .source-table th:nth-child(4),
+    .source-table td:nth-child(4) { display: none; }
+    .big-stat .num { font-size: 2.4rem; }
+    .two-bars { height: 140px; gap: 1.5rem; }
+    .single-bar { width: 60px; }
+    .h-bars { max-width: 100%; }
+  }
+  @media (max-width: 500px) {
+    nav { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+    nav a { white-space: nowrap; }
+    .site-title { display: none; }
+  }
+
+  footer {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+    border-top: 1px solid var(--rule);
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.6rem;
+    color: var(--dim);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div class="site-title">AI Music and The Future</div>
+    <nav>
+      <a class="active" data-page="summary">Summary</a>
+      <a data-page="data">Data</a>
+      <a data-page="listen">Blind Test</a>
+      <a data-page="sources">Sources</a>
+      <a data-page="recs">Search Tips</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+
+<div class="page active" id="page-summary">
+  <div class="page-header">
+    <h1>AI-Generated Music and Its Impact on the Music Industry</h1>
+  </div>
+  <div class="prose" style="margin-bottom:2.5rem;">
+    <p>This project examines the rise of AI-generated music, how it is affecting streaming platforms and creator livelihoods, and where the legal and economic landscape is headed. The site is organized into five sections: a topic summary covering what AI music is and why it matters, data visualizations showing the scale of the problem, a blind listening test, an evaluation of the ten sources used in this research, and recommendations for anyone looking to find good information on this topic.</p>
+  </div>
+  <div style="margin-bottom:2rem;">
+    <div style="font-family:'DM Sans',sans-serif; font-size:1.2rem; font-weight:700; color:#fff; margin-bottom:0.8rem;">Topic Summary</div>
+  </div>
+  <div class="col-layout">
+    <div class="prose">
+      <p>AI music is music created by generative models rather than human musicians. These models are trained on large datasets of existing music and produce tracks that closely mimic the sound of human-made songs. Platforms like Suno and Udio allow users to instantly generate music from text prompts, and the output is increasingly difficult to distinguish from human work. A Deezer-cited study found that 97% of listeners across nine thousand people and eight countries could not tell the difference between AI-generated and human-made music.</p>
+      <p>The economic impact of these changes cannot be overstated. CISAC, which represents five million creators worldwide, projects that 24% of music creators' revenues are at risk by 2028 with a cumulative loss of 10 billion euros over five years. This is not just a legal or cultural issue but an economic one that potentially threatens the livelihood of musicians.</p>
+      <h2>The Scale of AI Music on Streaming Platforms</h2>
+      <p>The scale of AI-generated music on streaming platforms is tremendous and continues to grow. According to Deezer, AI-generated music went from 10% of daily uploads to over 34% during 2025, meaning over 50,000 AI tracks are uploaded to their platform every single day. Deezer is currently the only major streaming service that actively detects and tags AI content using a proprietary system, and they also remove AI tracks from algorithmic recommendations and filter fraudulent streams out of royalty payouts.</p>
+      <p>Spotify, however, relies on a voluntary disclosure standard where uploaders can choose to label their tracks as AI-generated. This is a virtually worthless filtering mechanism since there is no incentive for uploaders to self-report. Users on both Spotify's community forum and Reddit report AI-generated tracks showing up in their Discover Weekly playlists, with some claiming nearly a quarter of their recommendations are AI-made. The frustration is widespread enough that some users say they have switched to Deezer specifically because of its AI tagging system.</p>
+      <h2>The Legal Landscape</h2>
+      <p>The legal landscape around AI music is changing rapidly. The three major record labels (Sony, Universal, and Warner) sued Suno and Udio for training their models on copyrighted music without permission. Warner became the first major label to settle with Suno, with Suno agreeing to phase out its current models in favor of new ones trained on licensed content. This signals that the industry is moving toward licensing frameworks rather than trying to shut AI music down entirely.</p>
+      <p>Some solutions have been proposed. An AI royalty fund has been put forward that attempts to compensate displaced human creators, arguing there is a human rights obligation to do so. Another paper demonstrates that it is actually feasible to trace which copyrighted works were used to train a specific AI output, which could make royalty attribution possible in the future.</p>
+    </div>
+    <aside class="sidebar-stats">
+      <div class="big-stat">
+        <div class="num">97%</div>
+        <div class="desc">of listeners can't tell AI from human music</div>
+        <div class="src">Deezer / Music Business Worldwide</div>
+      </div>
+      <div class="big-stat">
+        <div class="num">50k+</div>
+        <div class="desc">AI tracks uploaded to Deezer every day</div>
+        <div class="src">Music Business Worldwide</div>
+      </div>
+      <div class="big-stat">
+        <div class="num">&euro;10B</div>
+        <div class="desc">projected cumulative loss over 5 years</div>
+        <div class="src">CISAC</div>
+      </div>
+    </aside>
+  </div>
+</div>
+
+<div class="page" id="page-data">
+  <div class="page-header">
+    <h1>Key statistics on AI music's impact on streaming and creator revenue</h1>
+  </div>
+
+  <div class="chart-block">
+    <div class="chart-label">AI-generated tracks as % of daily uploads on Deezer</div>
+    <div class="two-bars">
+      <div class="single-bar">
+        <div class="single-bar-wrap"><div class="single-bar-inner" data-h="55" style="height:0;"><span class="single-bar-val">10%</span></div></div>
+        <div class="single-bar-label">Early 2024</div>
+      </div>
+      <div class="single-bar">
+        <div class="single-bar-wrap"><div class="single-bar-inner" data-h="140" style="height:0;"><span class="single-bar-val">34%</span></div></div>
+        <div class="single-bar-label">2025</div>
+      </div>
+    </div>
+    <div style="margin-top:1rem;">Source: Music Business Worldwide / Deezer</div>
+  </div>
+
+  <div class="chart-block">
+    <div class="chart-label">Listener detection accuracy</div>
+    <div class="donut-row">
+      <div class="donut-wrap">
+        <svg viewBox="0 0 100 100">
+          <circle class="track" cx="50" cy="50" r="45"/>
+          <circle class="fill" cx="50" cy="50" r="45" data-target="274"/>
+        </svg>
+        <div class="center">97%</div>
+      </div>
+      <div class="donut-info">
+        97% of listeners in a 9,000-person survey across eight countries could not distinguish AI-generated music from human-made music.
+        <div class="fine">Source: Deezer / Music Business Worldwide</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="chart-block">
+    <div class="chart-label">Projected cumulative revenue loss for music creators</div>
+    <div class="h-bars">
+      <div class="h-bar-row">
+        <div class="h-bar-label">2024</div>
+        <div class="h-bar-track"><div class="h-bar-fill" data-w="15"><span class="h-bar-val">&euro;1.2B</span></div></div>
+      </div>
+      <div class="h-bar-row">
+        <div class="h-bar-label">2025</div>
+        <div class="h-bar-track"><div class="h-bar-fill" data-w="30"><span class="h-bar-val">&euro;2.5B</span></div></div>
+      </div>
+      <div class="h-bar-row">
+        <div class="h-bar-label">2026</div>
+        <div class="h-bar-track"><div class="h-bar-fill" data-w="50"><span class="h-bar-val">&euro;4.2B</span></div></div>
+      </div>
+      <div class="h-bar-row">
+        <div class="h-bar-label">2027</div>
+        <div class="h-bar-track"><div class="h-bar-fill" data-w="75"><span class="h-bar-val">&euro;6.8B</span></div></div>
+      </div>
+      <div class="h-bar-row">
+        <div class="h-bar-label">2028</div>
+        <div class="h-bar-track"><div class="h-bar-fill" data-w="100"><span class="h-bar-val">&euro;10B</span></div></div>
+      </div>
+    </div>
+    <div style="margin-top:1rem;">24% of music creators' revenues at risk by 2028. Source: CISAC</div>
+  </div>
+</div>
+
+<div class="page" id="page-listen">
+  <div class="page-header">
+    <h1>Can you tell which track is AI-generated and which is human-made?</h1>
+  </div>
+  <p class="listen-intro">Three rounds. Two tracks per round. Pick which one you think was made by AI, then reveal the answer.</p>
+
+  <div class="round-nav">
+    <button class="round-tab active" data-round="1" id="rtab-1">Round 1</button>
+    <button class="round-tab" data-round="2" id="rtab-2" disabled>Round 2</button>
+    <button class="round-tab" data-round="3" id="rtab-3" disabled>Round 3</button>
+  </div>
+
+  <div class="round-panel active" id="rp-1">
+    <p class="round-prompt">One of these was made by a human. The other was generated by AI. Which is the machine?</p>
+    <div class="track-pair">
+      <div class="track-box" id="r1-boxA" onclick="pickTrack(1,'A')">
+        <div class="track-name">Track A</div>
+        <audio controls preload="none"><source src="round1-a.mp3" type="audio/mpeg"></audio>
+        <div class="tag ai" id="r1-tagA-ai">AI</div>
+        <div class="tag human" id="r1-tagA-human">Human</div>
+      </div>
+      <div class="track-box" id="r1-boxB" onclick="pickTrack(1,'B')">
+        <div class="track-name">Track B</div>
+        <audio controls preload="none"><source src="round1-b.mp3" type="audio/mpeg"></audio>
+        <div class="tag ai" id="r1-tagB-ai">AI</div>
+        <div class="tag human" id="r1-tagB-human">Human</div>
+      </div>
+    </div>
+    <div class="pick-row">
+      <span class="pick-label">This is the AI track:</span>
+      <button class="pick-btn" id="r1-pickA" onclick="pickTrack(1,'A')">A</button>
+      <button class="pick-btn" id="r1-pickB" onclick="pickTrack(1,'B')">B</button>
+    </div>
+    <button class="reveal-btn" id="r1-reveal" onclick="reveal(1)" disabled>Reveal</button>
+    <div class="round-result" id="r1-result"></div>
+    <button class="next-round-btn" id="r1-next" onclick="goRound(2)">Next round &rarr;</button>
+  </div>
+
+  <div class="round-panel" id="rp-2">
+    <p class="round-prompt">Same format. One human, one AI. Can you spot it?</p>
+    <div class="track-pair">
+      <div class="track-box" id="r2-boxA" onclick="pickTrack(2,'A')">
+        <div class="track-name">Track A</div>
+        <audio controls preload="none"><source src="round2-a.mp3" type="audio/mpeg"></audio>
+        <div class="tag ai" id="r2-tagA-ai">AI</div>
+        <div class="tag human" id="r2-tagA-human">Human</div>
+      </div>
+      <div class="track-box" id="r2-boxB" onclick="pickTrack(2,'B')">
+        <div class="track-name">Track B</div>
+        <audio controls preload="none"><source src="round2-b.mp3" type="audio/mpeg"></audio>
+        <div class="tag ai" id="r2-tagB-ai">AI</div>
+        <div class="tag human" id="r2-tagB-human">Human</div>
+      </div>
+    </div>
+    <div class="pick-row">
+      <span class="pick-label">This is the AI track:</span>
+      <button class="pick-btn" id="r2-pickA" onclick="pickTrack(2,'A')">A</button>
+      <button class="pick-btn" id="r2-pickB" onclick="pickTrack(2,'B')">B</button>
+    </div>
+    <button class="reveal-btn" id="r2-reveal" onclick="reveal(2)" disabled>Reveal</button>
+    <div class="round-result" id="r2-result"></div>
+    <button class="next-round-btn" id="r2-next" onclick="goRound(3)">Final round &rarr;</button>
+  </div>
+
+  <div class="round-panel" id="rp-3">
+    <p class="round-prompt">Last one. Pick the AI track.</p>
+    <div class="track-pair">
+      <div class="track-box" id="r3-boxA" onclick="pickTrack(3,'A')">
+        <div class="track-name">Track A</div>
+        <audio controls preload="none"><source src="round3-a.mp3" type="audio/mpeg"></audio>
+        <div class="tag ai" id="r3-tagA-ai">AI</div>
+        <div class="tag human" id="r3-tagA-human">Human</div>
+      </div>
+      <div class="track-box" id="r3-boxB" onclick="pickTrack(3,'B')">
+        <div class="track-name">Track B</div>
+        <audio controls preload="none"><source src="round3-b.mp3" type="audio/mpeg"></audio>
+        <div class="tag ai" id="r3-tagB-ai">AI</div>
+        <div class="tag human" id="r3-tagB-human">Human</div>
+      </div>
+    </div>
+    <div class="pick-row">
+      <span class="pick-label">This is the AI track:</span>
+      <button class="pick-btn" id="r3-pickA" onclick="pickTrack(3,'A')">A</button>
+      <button class="pick-btn" id="r3-pickB" onclick="pickTrack(3,'B')">B</button>
+    </div>
+    <button class="reveal-btn" id="r3-reveal" onclick="reveal(3)" disabled>Reveal</button>
+    <div class="round-result" id="r3-result"></div>
+    <div class="trick-box" id="r3-trick"><strong>Trick question.</strong> Both tracks were AI-generated. There was no human-made track this round. If you couldn't tell, you're not alone. This is exactly the problem the music industry is facing.</div>
+  </div>
+
+  <div class="final-result" id="final-result">
+    <div class="score" id="final-score"></div>
+    <div class="verdict" id="final-verdict"></div>
+  </div>
+</div>
+
+<div class="page" id="page-sources">
+  <div class="page-header">
+    <h1>Evaluation of the ten sources used in this project</h1>
+  </div>
+  <div style="overflow-x:auto;">
+  <table class="source-table">
+    <thead>
+      <tr>
+        <th style="width:40%;">Source</th>
+        <th style="width:10%;">Type</th>
+        <th style="width:30%;">Description</th>
+        <th style="width:20%;">Evaluation</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="source-link" href="https://academic.oup.com/book/55823" target="_blank"><span class="source-name">Protecting Human Creativity in AI-Generated Music with the Introduction of an AI-Royalty Fund</span></a><span class="source-outlet">Oxford Academic</span></td>
+        <td><span class="type-pill academic">Academic</span></td>
+        <td>Peer-reviewed article proposing an AI-royalty fund for displaced human creators.</td>
+        <td><div class="eval-tags"><span class="etag s">High authority</span><span class="etag s">Proposes solution</span><span class="etag w">Paywalled</span></div></td>
+      </tr>
+      <tr>
+        <td><a class="source-link" href="https://arxiv.org/abs/2311.09008" target="_blank"><span class="source-name">Computational Copyright: Towards a Royalty Model for Music Generative AI</span></a><span class="source-outlet">arXiv</span></td>
+        <td><span class="type-pill academic">Preprint</span></td>
+        <td>Technical paper arguing that royalty attribution from training data is feasible.</td>
+        <td><div class="eval-tags"><span class="etag s">High verifiability</span><span class="etag w">Not peer-reviewed</span><span class="etag w">Very technical</span></div></td>
+      </tr>
+      <tr>
+        <td><a class="source-link" href="https://time.com/6991466/record-labels-sue-ai-music-generator-startups/" target="_blank"><span class="source-name">Major Record Labels Sue AI Music Generators</span></a><span class="source-outlet">Time</span></td>
+        <td><span class="type-pill news">News</span></td>
+        <td>Coverage of the 2024 lawsuits by Sony, Universal, and Warner against Suno and Udio.</td>
+        <td><div class="eval-tags"><span class="etag s">Court filings</span><span class="etag s">Free access</span></div></td>
+      </tr>
+      <tr>
+        <td><a class="source-link" href="https://www.musicbusinessworldwide.com/over-50000-ai-generated-tracks-are-now-uploaded-to-deezer-every-day/" target="_blank"><span class="source-name">50,000 AI Tracks Flood Deezer Daily</span></a><span class="source-outlet">Music Business Worldwide</span></td>
+        <td><span class="type-pill news">News</span></td>
+        <td>Reports on AI uploads and the 97% listener statistic.</td>
+        <td><div class="eval-tags"><span class="etag s">Quantifies the problem</span><span class="etag w">Methodology undisclosed</span></div></td>
+      </tr>
+      <tr>
+        <td><a class="source-link" href="https://techcrunch.com/2025/04/29/warner-music-signs-deal-with-ai-music-startup-suno-settles-lawsuit/" target="_blank"><span class="source-name">Warner Music Signs Deal with AI Music Startup Suno, Settles Lawsuit</span></a><span class="source-outlet">TechCrunch</span></td>
+        <td><span class="type-pill news">News</span></td>
+        <td>Coverage of Warner settling with Suno and the shift to licensed AI models.</td>
+        <td><div class="eval-tags"><span class="etag s">Litigation to collaboration</span><span class="etag w">Terms undisclosed</span></div></td>
+      </tr>
+      <tr>
+        <td><a class="source-link" href="https://www.cisac.org/newsroom/articles/global-economic-study-shows-human-creators-future-risk-generative-ai" target="_blank"><span class="source-name">Global Economic Study Shows Human Creators' Future at Risk from Generative AI</span></a><span class="source-outlet">CISAC</span></td>
+        <td><span class="type-pill industry">Industry</span></td>
+        <td>Press release projecting 24% of music creators' revenues at risk by 2028.</td>
+        <td><div class="eval-tags"><span class="etag s">Represents 5M creators</span><span class="etag s">Market modeling</span><span class="etag w">Some speculation</span></div></td>
+      </tr>
+      <tr>
+        <td><a class="source-link" href="https://newsroom.deezer.com/deezer-launches-ai-detection/" target="_blank"><span class="source-name">Deezer Launches World's First AI Tagging System for Music Streaming</span></a><span class="source-outlet">Deezer Newsroom</span></td>
+        <td><span class="type-pill industry">Industry</span></td>
+        <td>Details on Deezer's system to detect, tag, and filter AI music.</td>
+        <td><div class="eval-tags"><span class="etag s">Real platform response</span><span class="etag s">Patent verifiable</span><span class="etag w">Self-reported</span></div></td>
+      </tr>
+      <tr>
+        <td><a class="source-link" href="https://community.spotify.com/t5/Live-Ideas/Mark-Disable-AI-Generated-Songs/idi-p/5757438" target="_blank"><span class="source-name">Mark / Disable AI Generated Songs</span></a><span class="source-outlet">Spotify Community Forum</span></td>
+        <td><span class="type-pill community">Community</span></td>
+        <td>Users request an AI filter for Spotify. 126 pages of comments.</td>
+        <td><div class="eval-tags"><span class="etag s">Widespread frustration</span><span class="etag w">Anecdotal</span></div></td>
+      </tr>
+      <tr>
+        <td><a class="source-link" href="https://newsroom.spotify.com/2024-09-05/ai-protections-artists-songwriters-producers/" target="_blank"><span class="source-name">Spotify Strengthens AI Protections for Artists, Songwriters, and Producers</span></a><span class="source-outlet">Spotify Newsroom</span></td>
+        <td><span class="type-pill industry">Industry</span></td>
+        <td>Spotify's official AI policies including voluntary disclosure.</td>
+        <td><div class="eval-tags"><span class="etag s">Official stance</span><span class="etag w">Voluntary = weak</span></div></td>
+      </tr>
+      <tr>
+        <td><a class="source-link" href="https://www.reddit.com/r/truespotify/comments/1d2u6hx/spotify_really_needs_an_ai_filter_already/" target="_blank"><span class="source-name">Spotify Really Needs an AI Filter Already</span></a><span class="source-outlet">Reddit &middot; r/truespotify</span></td>
+        <td><span class="type-pill community">Community</span></td>
+        <td>Users report AI tracks in Discover Weekly with tips for spotting them.</td>
+        <td><div class="eval-tags"><span class="etag s">Practical tips</span><span class="etag w">Low authority</span></div></td>
+      </tr>
+    </tbody>
+  </table>
+  </div>
+</div>
+
+<div class="page" id="page-recs">
+  <div class="page-header">
+    <h1>Recommendations for seeking information on this topic</h1>
+  </div>
+  <div class="rec-prose">
+    <p>If you are searching for information on AI music and its impact on the industry, you will find a lot of news articles and press releases but fewer academic sources. The issue is still young, so there hasn't been much time for research to be conducted. Also, the issue is important, new, and concerns something people feel very strongly about, which makes it perfect for news coverage. Here is what works best.</p>
+    <ul class="rec-list">
+      <li><strong>Academic sources are sparse but carry the most weight.</strong> The academic papers that do exist tend to be very dense and technical, especially anything dealing with copyright law or data attribution algorithms. They carry the most authority but require significant background knowledge to draw value from.</li>
+      <li><strong>Industry publications are the best middle ground.</strong> Industry publications report on primary evidence like court filings and company data without the complexity of academic journals. They are the best balance of reliability and readability for this topic.</li>
+      <li><strong>Platform newsrooms are underused.</strong> For platform-specific information, the newsrooms of streaming services upload valuable information relating to their policies. Deezer and Spotify both have newsrooms with official policy announcements that are often cited by news articles but rarely read directly.</li>
+      <li><strong>Forums capture what formal sources miss.</strong> Reddit threads and forum posts are worth checking for the listener perspective since they capture frustration and honesty that formal sources miss. Do not treat them as evidence of anything beyond individual experience.</li>
+      <li><strong>Be specific with your searches.</strong> Broad searches like "AI music" will return mostly opinion pieces and surface-level content. Narrowing your queries to specific aspects, like "Deezer AI detection system" or "Suno Warner settlement", gets you potentially valuable sources faster.</li>
+      <li><strong>Avoid the technical rabbit hole.</strong> Avoid getting too deep into the technical side of how generative models work unless that is specifically what you are researching. Those sources can be very difficult to understand and thus hard to draw value from.</li>
+    </ul>
+  </div>
+</div>
+
+</main>
+
+<footer>AI Music and The Future</footer>
+
+<script>
+  document.querySelectorAll('nav a').forEach(link => {
+    link.addEventListener('click', () => {
+      const target = link.getAttribute('data-page');
+      document.querySelectorAll('nav a').forEach(a => a.classList.remove('active'));
+      link.classList.add('active');
+      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+      document.getElementById('page-' + target).classList.add('active');
+      window.scrollTo(0, 0);
+      if (target === 'data') animateCharts();
+    });
+  });
+
+  function animateCharts() {
+    document.querySelectorAll('.single-bar-inner').forEach(bar => {
+      bar.style.height = bar.getAttribute('data-h') + 'px';
+    });
+    document.querySelectorAll('.donut-wrap .fill').forEach(c => {
+      c.style.strokeDasharray = c.getAttribute('data-target') + ' 283';
+    });
+    document.querySelectorAll('.h-bar-fill').forEach(f => {
+      f.style.width = f.getAttribute('data-w') + '%';
+    });
+  }
+
+  const ROUNDS = {
+    1: { ai: 'B', type: 'normal' },
+    2: { ai: 'A', type: 'normal' },
+    3: { ai: 'BOTH', type: 'trick' }
+  };
+  const picks = {};
+  let score = 0;
+
+  function pickTrack(round, choice) {
+    picks[round] = choice;
+    const r = 'r' + round;
+    document.getElementById(r + '-boxA').classList.toggle('selected', choice === 'A');
+    document.getElementById(r + '-boxB').classList.toggle('selected', choice === 'B');
+    document.getElementById(r + '-pickA').classList.toggle('active', choice === 'A');
+    document.getElementById(r + '-pickB').classList.toggle('active', choice === 'B');
+    document.getElementById(r + '-reveal').disabled = false;
+  }
+
+  function reveal(round) {
+    const r = 'r' + round;
+    const config = ROUNDS[round];
+    const pick = picks[round];
+    if (!pick) return;
+
+    if (config.type === 'trick') {
+      document.getElementById(r + '-tagA-ai').style.display = 'block';
+      document.getElementById(r + '-tagB-ai').style.display = 'block';
+      document.getElementById(r + '-boxA').classList.add('is-ai');
+      document.getElementById(r + '-boxB').classList.add('is-ai');
+      document.getElementById(r + '-boxA').classList.remove('selected');
+      document.getElementById(r + '-boxB').classList.remove('selected');
+      document.getElementById(r + '-trick').style.display = 'block';
+      setTimeout(() => {
+        const fin = document.getElementById('final-result');
+        fin.style.display = 'block';
+        document.getElementById('final-score').textContent = score + ' / 2';
+        const v = document.getElementById('final-verdict');
+        if (score === 2) {
+          v.textContent = 'You got both right. Sharp ears, but round 3 proves even that might not be enough.';
+        } else if (score === 1) {
+          v.textContent = 'One out of two. And round 3 shows why this problem is so hard to solve.';
+        } else {
+          v.textContent = "You're in good company. 97% of listeners can't tell the difference either.";
+        }
+      }, 600);
+    } else {
+      const ai = config.ai;
+      const human = ai === 'A' ? 'B' : 'A';
+      document.getElementById(r + '-tag' + ai + '-ai').style.display = 'block';
+      document.getElementById(r + '-tag' + human + '-human').style.display = 'block';
+      document.getElementById(r + '-box' + ai).classList.add('is-ai');
+      document.getElementById(r + '-box' + human).classList.add('is-human');
+      document.getElementById(r + '-box' + ai).classList.remove('selected');
+      document.getElementById(r + '-box' + human).classList.remove('selected');
+      const msg = document.getElementById(r + '-result');
+      if (pick === ai) {
+        score++;
+        msg.textContent = 'Correct.';
+        msg.style.color = '#22c55e';
+      } else {
+        msg.textContent = 'Not quite. Track ' + ai + ' was AI.';
+        msg.style.color = '#fbbf24';
+      }
+      msg.style.display = 'block';
+      document.getElementById(r + '-next').style.display = 'inline-block';
+    }
+
+    document.getElementById('rtab-' + round).classList.add('done');
+    document.getElementById(r + '-reveal').disabled = true;
+    document.getElementById(r + '-pickA').disabled = true;
+    document.getElementById(r + '-pickB').disabled = true;
+  }
+
+  function goRound(round) {
+    document.querySelectorAll('.round-panel').forEach(p => p.classList.remove('active'));
+    document.getElementById('rp-' + round).classList.add('active');
+    document.querySelectorAll('.round-tab').forEach(t => t.classList.remove('active'));
+    const tab = document.getElementById('rtab-' + round);
+    tab.classList.add('active');
+    tab.disabled = false;
+  }
+</script>
+</body>
+</html>
