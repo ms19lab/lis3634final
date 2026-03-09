@@ -835,7 +835,7 @@
   <div class="page-header">
     <h1>Can you tell which track is AI-generated and which is human-made?</h1>
   </div>
-  <p class="listen-intro">Three rounds. Two tracks per round. Pick which one you think was made by AI, then reveal the answer.</p>
+  <p class="listen-intro">Pick which of the two tracks you think was made by AI, then reveal the answer.</p>
 
   <div class="round-nav">
     <button class="round-tab active" data-round="1" id="rtab-1">Round 1</button>
@@ -961,8 +961,8 @@
             <div class="vol-slider"><input type="range" min="0" max="100" value="100" oninput="setVol(event)"></div>
           </div>
         </div>
-        <div class="tag ai" id="r3-tagA-ai">AI</div>
-        <div class="tag human" id="r3-tagA-human">Human</div>
+        <div class="tag ai" id="r3-tagB-ai">AI</div>
+        <div class="tag human" id="r3-tagB-human">Human</div>
       </div>
     </div>
     <div class="pick-row">
@@ -1027,13 +1027,13 @@
         <td><div class="eval-tags"><span class="etag s">Litigation to collaboration</span><span class="etag w">Terms undisclosed</span></div></td>
       </tr>
       <tr>
-        <td><a class="source-link" href="https://www.cisac.org/newsroom/articles/global-economic-study-shows-human-creators-future-risk-generative-ai" target="_blank"><span class="source-name">Global Economic Study Shows Human Creators' Future at Risk from Generative AI</span></a><span class="source-outlet">CISAC</span></td>
+        <td><a class="source-link" href="https://www.cisac.org/Newsroom/news-releases/global-economic-study-shows-human-creators-future-risk-generative-ai" target="_blank"><span class="source-name">Global Economic Study Shows Human Creators' Future at Risk from Generative AI</span></a><span class="source-outlet">CISAC</span></td>
         <td><span class="type-pill industry">Industry</span></td>
         <td>Press release projecting 24% of music creators' revenues at risk by 2028.</td>
         <td><div class="eval-tags"><span class="etag s">Represents 5M creators</span><span class="etag s">Market modeling</span><span class="etag w">Some speculation</span></div></td>
       </tr>
       <tr>
-        <td><a class="source-link" href="https://newsroom.deezer.com/deezer-launches-ai-detection/" target="_blank"><span class="source-name">Deezer Launches World's First AI Tagging System for Music Streaming</span></a><span class="source-outlet">Deezer Newsroom</span></td>
+        <td><a class="source-link" href="https://newsroom-deezer.com/2025/06/deezer-launches-worlds-first-ai-tagging-system-for-music-streaming/" target="_blank"><span class="source-name">Deezer Launches World's First AI Tagging System for Music Streaming</span></a><span class="source-outlet">Deezer Newsroom</span></td>
         <td><span class="type-pill industry">Industry</span></td>
         <td>Details on Deezer's system to detect, tag, and filter AI music.</td>
         <td><div class="eval-tags"><span class="etag s">Real platform response</span><span class="etag s">Patent verifiable</span><span class="etag w">Self-reported</span></div></td>
@@ -1045,13 +1045,13 @@
         <td><div class="eval-tags"><span class="etag s">Widespread frustration</span><span class="etag w">Anecdotal</span></div></td>
       </tr>
       <tr>
-        <td><a class="source-link" href="https://newsroom.spotify.com/2024-09-05/ai-protections-artists-songwriters-producers/" target="_blank"><span class="source-name">Spotify Strengthens AI Protections for Artists, Songwriters, and Producers</span></a><span class="source-outlet">Spotify Newsroom</span></td>
+        <td><a class="source-link" href="https://newsroom.spotify.com/2025-09-25/spotify-strengthens-ai-protections/" target="_blank"><span class="source-name">Spotify Strengthens AI Protections for Artists, Songwriters, and Producers</span></a><span class="source-outlet">Spotify Newsroom</span></td>
         <td><span class="type-pill industry">Industry</span></td>
         <td>Spotify's official AI policies including voluntary disclosure.</td>
         <td><div class="eval-tags"><span class="etag s">Official stance</span><span class="etag w">Voluntary = weak</span></div></td>
       </tr>
       <tr>
-        <td><a class="source-link" href="https://www.reddit.com/r/truespotify/comments/1d2u6hx/spotify_really_needs_an_ai_filter_already/" target="_blank"><span class="source-name">Spotify Really Needs an AI Filter Already</span></a><span class="source-outlet">Reddit &middot; r/truespotify</span></td>
+        <td><a class="source-link" href="https://www.reddit.com/r/truespotify/comments/1qa2wv9/spotify_really_needs_an_ai_filter_already/" target="_blank"><span class="source-name">Spotify Really Needs an AI Filter Already</span></a><span class="source-outlet">Reddit &middot; r/truespotify</span></td>
         <td><span class="type-pill community">Community</span></td>
         <td>Users report AI tracks in Discover Weekly with tips for spotting them.</td>
         <td><div class="eval-tags"><span class="etag s">Practical tips</span><span class="etag w">Low authority</span></div></td>
@@ -1144,13 +1144,7 @@
         fin.style.display = 'block';
         document.getElementById('final-score').textContent = score + ' / 2';
         const v = document.getElementById('final-verdict');
-        if (score === 2) {
-          v.textContent = 'You got both right. Sharp ears, but round 3 proves even that might not be enough.';
-        } else if (score === 1) {
-          v.textContent = 'One out of two. And round 3 shows why this problem is so hard to solve.';
-        } else {
-          v.textContent = "You're in good company. 97% of listeners can't tell the difference either.";
-        }
+        v.textContent = '';
       }, 600);
     } else {
       const ai = config.ai;
