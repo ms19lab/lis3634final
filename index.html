@@ -394,9 +394,94 @@
     margin-bottom: 0.8rem;
   }
   .track-box audio {
-    width: 100%;
-    height: 36px;
-    filter: invert(1) hue-rotate(180deg) brightness(0.7);
+    display: none;
+  }
+  .custom-player {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin-top: 0.4rem;
+  }
+  .play-btn {
+    width: 32px;
+    height: 32px;
+    background: none;
+    border: 1px solid #444;
+    color: var(--white);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    font-size: 0.75rem;
+    transition: border-color 0.2s;
+  }
+  .play-btn:hover { border-color: var(--white); }
+  .progress-wrap {
+    flex: 1;
+    height: 6px;
+    background: #222;
+    cursor: pointer;
+    position: relative;
+  }
+  .progress-fill {
+    height: 100%;
+    background: var(--white);
+    width: 0%;
+    pointer-events: none;
+  }
+  .time-display {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--white);
+    min-width: 32px;
+    text-align: right;
+    flex-shrink: 0;
+  }
+  .vol-wrap {
+    position: relative;
+    flex-shrink: 0;
+  }
+  .vol-btn {
+    width: 32px;
+    height: 32px;
+    background: none;
+    border: 1px solid #444;
+    color: var(--white);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.7rem;
+    transition: border-color 0.2s;
+  }
+  .vol-btn:hover { border-color: var(--white); }
+  .vol-slider {
+    display: none;
+    position: absolute;
+    bottom: 40px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 30px;
+    height: 100px;
+    background: #111;
+    border: 1px solid #333;
+    padding: 8px 0;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+  }
+  .vol-slider.open {
+    display: flex;
+  }
+  .vol-slider input[type="range"] {
+    writing-mode: vertical-lr;
+    direction: rtl;
+    height: 80px;
+    width: 4px;
+    accent-color: var(--white);
+    cursor: pointer;
   }
   .track-box .tag {
     display: none;
@@ -763,13 +848,31 @@
     <div class="track-pair">
       <div class="track-box" id="r1-boxA" onclick="pickTrack(1,'A')">
         <div class="track-name">Track A</div>
-        <audio controls preload="none"><source src="round1-a.mp3" type="audio/mpeg"></audio>
+        <audio preload="none"><source src="round1-a.mp3" type="audio/mpeg"></audio>
+        <div class="custom-player">
+          <button class="play-btn" onclick="togglePlay(event)"><audio controls preload="none"><source src="round1-a.mp3" type="audio/mpeg"></audio>#9654;</button>
+          <div class="progress-wrap" onclick="seekAudio(event)"><div class="progress-fill"></div></div>
+          <div class="time-display">0:00</div>
+          <div class="vol-wrap">
+            <button class="vol-btn" onclick="toggleVol(event)"><audio controls preload="none"><source src="round1-a.mp3" type="audio/mpeg"></audio>#128264;</button>
+            <div class="vol-slider"><input type="range" min="0" max="100" value="100" oninput="setVol(event)"></div>
+          </div>
+        </div>
         <div class="tag ai" id="r1-tagA-ai">AI</div>
         <div class="tag human" id="r1-tagA-human">Human</div>
       </div>
       <div class="track-box" id="r1-boxB" onclick="pickTrack(1,'B')">
         <div class="track-name">Track B</div>
-        <audio controls preload="none"><source src="round1-b.mp3" type="audio/mpeg"></audio>
+        <audio preload="none"><source src="round1-b.mp3" type="audio/mpeg"></audio>
+        <div class="custom-player">
+          <button class="play-btn" onclick="togglePlay(event)"><audio controls preload="none"><source src="round1-b.mp3" type="audio/mpeg"></audio>#9654;</button>
+          <div class="progress-wrap" onclick="seekAudio(event)"><div class="progress-fill"></div></div>
+          <div class="time-display">0:00</div>
+          <div class="vol-wrap">
+            <button class="vol-btn" onclick="toggleVol(event)"><audio controls preload="none"><source src="round1-b.mp3" type="audio/mpeg"></audio>#128264;</button>
+            <div class="vol-slider"><input type="range" min="0" max="100" value="100" oninput="setVol(event)"></div>
+          </div>
+        </div>
         <div class="tag ai" id="r1-tagB-ai">AI</div>
         <div class="tag human" id="r1-tagB-human">Human</div>
       </div>
@@ -789,13 +892,31 @@
     <div class="track-pair">
       <div class="track-box" id="r2-boxA" onclick="pickTrack(2,'A')">
         <div class="track-name">Track A</div>
-        <audio controls preload="none"><source src="round2-a.mp3" type="audio/mpeg"></audio>
+        <audio preload="none"><source src="round2-a.mp3" type="audio/mpeg"></audio>
+        <div class="custom-player">
+          <button class="play-btn" onclick="togglePlay(event)"><audio controls preload="none"><source src="round2-a.mp3" type="audio/mpeg"></audio>#9654;</button>
+          <div class="progress-wrap" onclick="seekAudio(event)"><div class="progress-fill"></div></div>
+          <div class="time-display">0:00</div>
+          <div class="vol-wrap">
+            <button class="vol-btn" onclick="toggleVol(event)"><audio controls preload="none"><source src="round2-a.mp3" type="audio/mpeg"></audio>#128264;</button>
+            <div class="vol-slider"><input type="range" min="0" max="100" value="100" oninput="setVol(event)"></div>
+          </div>
+        </div>
         <div class="tag ai" id="r2-tagA-ai">AI</div>
         <div class="tag human" id="r2-tagA-human">Human</div>
       </div>
       <div class="track-box" id="r2-boxB" onclick="pickTrack(2,'B')">
         <div class="track-name">Track B</div>
-        <audio controls preload="none"><source src="round2-b.mp3" type="audio/mpeg"></audio>
+        <audio preload="none"><source src="round2-b.mp3" type="audio/mpeg"></audio>
+        <div class="custom-player">
+          <button class="play-btn" onclick="togglePlay(event)"><audio controls preload="none"><source src="round2-b.mp3" type="audio/mpeg"></audio>#9654;</button>
+          <div class="progress-wrap" onclick="seekAudio(event)"><div class="progress-fill"></div></div>
+          <div class="time-display">0:00</div>
+          <div class="vol-wrap">
+            <button class="vol-btn" onclick="toggleVol(event)"><audio controls preload="none"><source src="round2-b.mp3" type="audio/mpeg"></audio>#128264;</button>
+            <div class="vol-slider"><input type="range" min="0" max="100" value="100" oninput="setVol(event)"></div>
+          </div>
+        </div>
         <div class="tag ai" id="r2-tagB-ai">AI</div>
         <div class="tag human" id="r2-tagB-human">Human</div>
       </div>
@@ -815,13 +936,31 @@
     <div class="track-pair">
       <div class="track-box" id="r3-boxA" onclick="pickTrack(3,'A')">
         <div class="track-name">Track A</div>
-        <audio controls preload="none"><source src="round3-a.mp3" type="audio/mpeg"></audio>
+        <audio preload="none"><source src="round3-a.mp3" type="audio/mpeg"></audio>
+        <div class="custom-player">
+          <button class="play-btn" onclick="togglePlay(event)"><audio controls preload="none"><source src="round3-a.mp3" type="audio/mpeg"></audio>#9654;</button>
+          <div class="progress-wrap" onclick="seekAudio(event)"><div class="progress-fill"></div></div>
+          <div class="time-display">0:00</div>
+          <div class="vol-wrap">
+            <button class="vol-btn" onclick="toggleVol(event)"><audio controls preload="none"><source src="round3-a.mp3" type="audio/mpeg"></audio>#128264;</button>
+            <div class="vol-slider"><input type="range" min="0" max="100" value="100" oninput="setVol(event)"></div>
+          </div>
+        </div>
         <div class="tag ai" id="r3-tagA-ai">AI</div>
         <div class="tag human" id="r3-tagA-human">Human</div>
       </div>
       <div class="track-box" id="r3-boxB" onclick="pickTrack(3,'B')">
         <div class="track-name">Track B</div>
-        <audio controls preload="none"><source src="round3-b.mp3" type="audio/mpeg"></audio>
+        <audio preload="none"><source src="round3-b.mp3" type="audio/mpeg"></audio>
+        <div class="custom-player">
+          <button class="play-btn" onclick="togglePlay(event)"><audio controls preload="none"><source src="round3-b.mp3" type="audio/mpeg"></audio>#9654;</button>
+          <div class="progress-wrap" onclick="seekAudio(event)"><div class="progress-fill"></div></div>
+          <div class="time-display">0:00</div>
+          <div class="vol-wrap">
+            <button class="vol-btn" onclick="toggleVol(event)"><audio controls preload="none"><source src="round3-b.mp3" type="audio/mpeg"></audio>#128264;</button>
+            <div class="vol-slider"><input type="range" min="0" max="100" value="100" oninput="setVol(event)"></div>
+          </div>
+        </div>
         <div class="tag ai" id="r3-tagB-ai">AI</div>
         <div class="tag human" id="r3-tagB-human">Human</div>
       </div>
@@ -1042,6 +1181,11 @@
   }
 
   function goRound(round) {
+    document.querySelectorAll('audio').forEach(a => { a.pause(); a.currentTime = 0; });
+    document.querySelectorAll('.progress-fill').forEach(f => f.style.width = '0%');
+    document.querySelectorAll('.time-display').forEach(t => t.textContent = '0:00');
+    document.querySelectorAll('.play-btn').forEach(b => b.innerHTML = '&#9654;');
+    document.querySelectorAll('.vol-slider').forEach(s => s.classList.remove('open'));
     document.querySelectorAll('.round-panel').forEach(p => p.classList.remove('active'));
     document.getElementById('rp-' + round).classList.add('active');
     document.querySelectorAll('.round-tab').forEach(t => t.classList.remove('active'));
@@ -1049,6 +1193,78 @@
     tab.classList.add('active');
     tab.disabled = false;
   }
+
+  function getAudio(el) {
+    return el.closest('.track-box').querySelector('audio');
+  }
+
+  function formatTime(s) {
+    const m = Math.floor(s / 60);
+    const sec = Math.floor(s % 60);
+    return m + ':' + (sec < 10 ? '0' : '') + sec;
+  }
+
+  function togglePlay(e) {
+    e.stopPropagation();
+    const btn = e.currentTarget;
+    const audio = getAudio(btn);
+    if (audio.paused) {
+      document.querySelectorAll('audio').forEach(a => {
+        if (a !== audio) {
+          a.pause();
+          const otherBtn = a.closest('.track-box').querySelector('.play-btn');
+          if (otherBtn) otherBtn.innerHTML = '&#9654;';
+        }
+      });
+      audio.play();
+      btn.innerHTML = '&#9646;&#9646;';
+    } else {
+      audio.pause();
+      btn.innerHTML = '&#9654;';
+    }
+  }
+
+  function seekAudio(e) {
+    e.stopPropagation();
+    const wrap = e.currentTarget;
+    const audio = getAudio(wrap);
+    const rect = wrap.getBoundingClientRect();
+    const pct = (e.clientX - rect.left) / rect.width;
+    if (audio.duration) audio.currentTime = pct * audio.duration;
+  }
+
+  function toggleVol(e) {
+    e.stopPropagation();
+    const slider = e.currentTarget.parentElement.querySelector('.vol-slider');
+    slider.classList.toggle('open');
+  }
+
+  function setVol(e) {
+    e.stopPropagation();
+    const audio = getAudio(e.target);
+    audio.volume = e.target.value / 100;
+  }
+
+  setInterval(() => {
+    document.querySelectorAll('.track-box').forEach(box => {
+      const audio = box.querySelector('audio');
+      const fill = box.querySelector('.progress-fill');
+      const time = box.querySelector('.time-display');
+      const btn = box.querySelector('.play-btn');
+      if (!audio || !fill) return;
+      if (audio.duration) {
+        fill.style.width = (audio.currentTime / audio.duration * 100) + '%';
+        time.textContent = formatTime(audio.currentTime);
+        if (audio.ended) btn.innerHTML = '&#9654;';
+      }
+    });
+  }, 200);
+
+  document.addEventListener('click', (e) => {
+    if (!e.target.closest('.vol-wrap')) {
+      document.querySelectorAll('.vol-slider').forEach(s => s.classList.remove('open'));
+    }
+  });
 </script>
 </body>
 </html>
